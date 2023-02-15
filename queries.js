@@ -7,13 +7,21 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 })
 
+// TODO: pagination
 const getAllFlights = (request, response) => {
   pool.query(
     'SELECT * FROM flights',
     (err, results) => {
-      if (err) { throw err }
-      
-      response.status(200).json(results.row)
+      if (err) { 
+        console.err(err)
+        throw err
+      }
+
+      response.status(200).json(results.rows)
     }
   )
+}
+
+module.exports = {
+  getAllFlights,
 }
