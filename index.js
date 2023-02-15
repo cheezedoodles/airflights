@@ -11,8 +11,8 @@ app.use(
   })
 )
 
-app.get('/', (req, res) => {
-  res.json({greeting: 'Hello world!'})
+app.get('/', (request, response) => {
+  response.json({greeting: 'Hello world!'})
 })
 
 app.listen(port, () => {
