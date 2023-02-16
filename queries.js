@@ -25,3 +25,4 @@ const getAllFlights = (request, response) => {
 module.exports = {
   getAllFlights,
 }
+
