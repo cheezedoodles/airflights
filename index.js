@@ -1,10 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const db = require('./queries')
+const cors = require('cors');
 const app = express()
-const port = 3000
+const port = 3001
 
 app.use(bodyParser.json())
+
+app.use(cors())
 
 app.use(
   bodyParser.urlencoded({
@@ -12,11 +15,11 @@ app.use(
   })
 )
 
-app.get('/', (request, response) => {
+app.get('/api', (request, response) => {
   response.json({greeting: 'Hello world!'})
 })
 
-app.get('/flights', db.getAllFlights)
+app.get('/api/flights', db.getAllFlights)
 
 app.listen(port, () => {
   console.log(`App running on port ${port}`)
