@@ -10,7 +10,7 @@ const pool = new Pool({
 // TODO: pagination
 const getAllFlights = (request, response) => {
   pool.query(
-    'SELECT * FROM flights LIMIT 10',
+    'SELECT * FROM flights LIMIT 50',
     (err, results) => {
       if (err) {
         console.err(err)
