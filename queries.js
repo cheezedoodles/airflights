@@ -7,19 +7,48 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 })
 
-// TODO: pagination
-const getAllFlights = (request, response) => {
-  pool.query(
-    'SELECT * FROM flights LIMIT 50',
-    (err, results) => {
-      if (err) {
-        console.err(err)
-        throw err
-      }
-
-      response.status(200).json(results.rows)
+let countRows
+pool.query(
+  'SELECT count(*) FROM flights',
+  (err, results) => {
+    if (err) {
+      throw err
     }
-  )
+
+    countRows = results.rows[0].count
+  })
+
+
+const getAllFlights = (request, response) => {
+  
+  const limit = 25;
+  const pageCount = Math.ceil(countRows / limit)
+
+  let page = parseInt(request.query.page) > 1 
+    ? parseInt(request.query.page) 
+    : 1
+  if (page > pageCount) page = pageCount
+
+  let offset = limit * (page - 1)
+
+  const query = {
+    name: 'fetch-flights',
+    text: 'SELECT * FROM flights LIMIT $1 OFFSET $2',
+    values: [limit, offset],
+  }
+ 
+  pool.query(query, (err, results) => {
+    if (err) {
+      throw err
+    }
+
+    response.status(200).json({
+      flights: results.rows,
+      page,
+      pageCount,
+      lastPage: page === pageCount,
+    })
+  })
 }
 
 module.exports = {
