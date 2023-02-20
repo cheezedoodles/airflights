@@ -25,8 +25,7 @@ app.get('/api/flights/ids', db.getFlightsIds)
 
 app.get('/api/flights', db.getAllFlights)
 
-
-// app.get('/api/flights/:id', db.getFlightInfo)
+app.get('/api/flights/:id', db.getFlightInfo)
 
 app.listen(port, () => {
   console.log(`App running on port ${port}`)
