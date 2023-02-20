@@ -51,7 +51,20 @@ const getAllFlights = (request, response) => {
   })
 }
 
+const getFlightsIds = (request, response) => {
+  pool.query('SELECT flight_id FROM flights', (err, results) => {
+    if (err) {
+      throw err
+    }
+
+    response.status(200).json(
+      results.rows
+    )
+  })
+}
+
 module.exports = {
   getAllFlights,
+  getFlightsIds
 }
 
