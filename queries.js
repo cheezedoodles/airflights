@@ -13,7 +13,7 @@ const getAllFlights = (request, response) => {
     'SELECT count(*) FROM flights',
     (err, results) => {
       if (err) {
-        throw err
+        return response.status(404).send('404 not found')
       }
   
       let countRows = results.rows[0].count
@@ -36,7 +36,7 @@ const getAllFlights = (request, response) => {
     
       pool.query(query, (err, results) => {
         if (err) {
-          throw err
+          return response.status(404).send('404 not found')
         }
 
         response.status(200).json({
@@ -52,11 +52,11 @@ const getAllFlights = (request, response) => {
 const getFlightsIds = (request, response) => {
   pool.query('SELECT flight_id FROM flights', (err, results) => {
     if (err) {
-      throw err
+      return response.status(404).send('404 not found')
     }
 
     response.status(200).json(
-      results.rows
+      results.rows.slice(0, 500)
     )
   })
 }
@@ -85,7 +85,7 @@ const getFlightInfo = (request, response) => {
   }
 
   pool.query(query, (err, results) => {
-    if (err) { throw err }
+    if (err) { return response.status(404).send('404 not found') }
 
     const flightInfo = results.rows[0]
     pool.query(
@@ -96,7 +96,7 @@ const getFlightInfo = (request, response) => {
       WHERE f_v.flight_id = $1;`,
       [id],
       (err, results) => {
-        if (err) { throw err }
+        if (err) { return response.status(404).send('404 not found') }
 
         const allSeats = results.rows
 
@@ -108,7 +108,7 @@ const getFlightInfo = (request, response) => {
           WHERE f_v.flight_id = $1;`,
           [id],
           (err, results) => {
-            if (err) { throw err }
+            if (err) { return response.status(404).send('404 not found') }
 
             const takenSeats = results.rows
 
