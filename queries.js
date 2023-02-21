@@ -139,7 +139,7 @@ const searchFlight = (request, response) => {
 
       response.status(200).json({
         flights: results.rows,
-        exists: true
+        exists: results.rowCount ? true : false,
       })
     }
   )
