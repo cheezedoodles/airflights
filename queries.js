@@ -56,7 +56,7 @@ const getFlightsIds = (request, response) => {
     }
 
     response.status(200).json(
-      results.rows.slice(0, 500)
+      results.rows
     )
   })
 }
@@ -122,9 +122,33 @@ const getFlightInfo = (request, response) => {
   })
 }
 
+const searchFlight = (request, response) => {
+  const flight_no = request.params.flight_no
+
+  const query = 
+  pool.query(
+    `SELECT * FROM flights WHERE flight_no = $1`,
+    [flight_no],
+    (err, results) => {
+      if (err) { 
+        return response.status(404).json({
+          flights: [],
+          exists: false
+        })
+      }
+
+      response.status(200).json({
+        flights: results.rows,
+        exists: true
+      })
+    }
+  )
+}
+
 module.exports = {
   getAllFlights,
   getFlightsIds,
   getFlightInfo,
+  searchFlight,
 }
 

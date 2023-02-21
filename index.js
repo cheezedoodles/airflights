@@ -27,6 +27,8 @@ app.get('/api/flights', db.getAllFlights)
 
 app.get('/api/flights/:id', db.getFlightInfo)
 
+app.get('/api/flights/search/:flight_no', db.searchFlight)
+
 app.listen(port, () => {
   console.log(`App running on port ${port}`)
 })
